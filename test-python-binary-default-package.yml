@@ -1,0 +1,53 @@
+name: run-simp-py
+base: core18
+version: '1.0.0'
+summary: Simple Py
+description: |
+  Simple Py
+grade: stable
+confinement: strict
+architectures:
+  - build-on: amd64
+
+
+apps:
+  python:
+    command: python
+    plugs:
+      interface: system-files
+      write:
+         - /tmp
+      read:
+         - /tmp
+     
+
+  node:
+    command: node
+    plugs:
+      - system-files
+      - network
+      - network-bind
+
+  runhello:
+     command: python
+  runhello1:
+     command: node
+
+  
+parts:
+  cprog:
+    source: https://github.com/drunkenlord/run-simplepy/releases/download/v1.0.0/py.tar.gz
+    plugin: dump
+
+  python:
+    plugin: python
+    python-version: python2 
+    python-packages:
+      - argparse==1.2.2
+
+  node:
+    plugin: nodejs
+    nodejs-version: 8.12.0
+    nodejs-package-manager: npm
+    nodejs-yarn-version: v1.19.1
+    source: .
